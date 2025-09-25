@@ -1,16 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBuilderDto } from './dto/create-builder.dto';
 import { UpdateBuilderDto } from './dto/update-builder.dto';
 import { Builder } from './models/builder.model';
 import { InjectModel } from '@nestjs/sequelize';
+import { Company } from '../company/models/company.model';
+import { CompanyService } from '../company/company.service';
 
 @Injectable()
 export class BuilderService {
   constructor(
-    @InjectModel(Builder) private readonly builderModel: typeof Builder
+    @InjectModel(Builder) private readonly builderModel: typeof Builder,
+    @InjectModel(Company) private readonly companyModel: typeof Company,
+    private readonly companyService: CompanyService,
   ) {}
 
   async create(createBuilderDto: CreateBuilderDto): Promise<Builder> {
+    const { companyId } = createBuilderDto;
+    // const company = await this.companyModel.findByPk(companyId);
+    const company = await this.companyService.findOne(companyId);
+    if (!company) {
+      throw new NotFoundException(`Company with id ${companyId} does not exist.`);
+    }
     const newBuilder = await this.builderModel.create(createBuilderDto);
     return newBuilder;
   }

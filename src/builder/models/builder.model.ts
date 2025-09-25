@@ -10,6 +10,7 @@ interface IBuilderAttributes {
     full_name: string;
     birth_date: Date;
     salary: number;
+    companyId: number;
 }
 
 @Table({ tableName: "builder", freezeTableName: true })

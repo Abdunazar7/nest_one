@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateCompanyDto } from "./dto/create-company.dto";
 import { UpdateCompanyDto } from "./dto/update-company.dto";
 import { InjectModel } from "@nestjs/sequelize";
@@ -19,8 +19,12 @@ export class CompanyService {
     return this.companyModel.findAll();
   }
 
-  findOne(id: number): Promise<Company | null> {
-    return this.companyModel.findByPk(id);
+  async findOne(id: number): Promise<Company | null> {
+    const company = await this.companyModel.findByPk(id);
+    if (!company) {
+      throw new NotFoundException(`Company with id ${id} not found`);
+    }
+    return company;
   }
 
   findByName(name: string): Promise<Company | null> {
