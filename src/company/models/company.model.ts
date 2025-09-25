@@ -7,6 +7,7 @@ import {
   Table,
 } from "sequelize-typescript";
 import { Builder } from "../../builder/models/builder.model";
+import { Machine } from "../../machine/models/machine.model";
 
 interface ICompanyCreationAttr {
   name: string;
@@ -51,4 +52,7 @@ export class Company extends Model<Company, ICompanyCreationAttr> {
 
   @HasMany(() => Builder)
   builders: Builder[];
+
+  @HasMany(() => Machine)
+  machines: Machine[];
 }

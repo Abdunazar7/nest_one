@@ -7,6 +7,8 @@ import { DriverModule } from './driver/driver.module';
 import { BuilderModule } from './builder/builder.module';
 import { Driver } from './driver/models/driver.model';
 import { Builder } from './builder/models/builder.model';
+import { MachineModule } from './machine/machine.module';
+import { Machine } from './machine/models/machine.model';
 
 @Module({
   imports: [ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
@@ -17,14 +19,15 @@ import { Builder } from './builder/models/builder.model';
       username: process.env.PG_USER,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
-      models: [Company, Driver, Builder],
+      models: [Company, Driver, Builder, Machine],
       autoLoadModels: true,
       logging: false,
       sync: { alter: true },
     }),
     CompanyModule,
     DriverModule,
-    BuilderModule
+    BuilderModule,
+    MachineModule
   ],
   controllers: [],
   providers: [],
