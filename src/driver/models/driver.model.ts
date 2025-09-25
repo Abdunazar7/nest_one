@@ -1,10 +1,13 @@
 import {
   AutoIncrement,
+  BelongsToMany,
   Column,
   DataType,
   Model,
   Table,
 } from "sequelize-typescript";
+import { Machine } from "../../machine/models/machine.model";
+import { MachineDriver } from "../../machine_driver/models/machine_driver.model";
 
 interface IDriverCreationAttr {
   first_name: string;
@@ -46,4 +49,7 @@ export class Driver extends Model<Driver, IDriverCreationAttr> {
     unique: true,
   })
   declare license: string;
+
+  @BelongsToMany(() => Machine, () => MachineDriver)
+  machines: Machine[];
 }

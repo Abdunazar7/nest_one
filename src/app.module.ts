@@ -1,17 +1,20 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { CompanyModule } from './company/company.module';
-import { Company } from './company/models/company.model';
-import { DriverModule } from './driver/driver.module';
-import { BuilderModule } from './builder/builder.module';
-import { Driver } from './driver/models/driver.model';
-import { Builder } from './builder/models/builder.model';
-import { MachineModule } from './machine/machine.module';
-import { Machine } from './machine/models/machine.model';
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { SequelizeModule } from "@nestjs/sequelize";
+import { CompanyModule } from "./company/company.module";
+import { Company } from "./company/models/company.model";
+import { DriverModule } from "./driver/driver.module";
+import { BuilderModule } from "./builder/builder.module";
+import { Driver } from "./driver/models/driver.model";
+import { Builder } from "./builder/models/builder.model";
+import { MachineModule } from "./machine/machine.module";
+import { Machine } from "./machine/models/machine.model";
+import { MachineDriverModule } from "./machine_driver/machine_driver.module";
+import { MachineDriver } from "./machine_driver/models/machine_driver.model";
 
 @Module({
-  imports: [ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
+  imports: [
+    ConfigModule.forRoot({ envFilePath: ".env", isGlobal: true }),
     SequelizeModule.forRoot({
       dialect: "postgres",
       host: process.env.PG_HOST,
@@ -19,7 +22,7 @@ import { Machine } from './machine/models/machine.model';
       username: process.env.PG_USER,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
-      models: [Company, Driver, Builder, Machine],
+      models: [Company, Driver, Builder, Machine, MachineDriver],
       autoLoadModels: true,
       logging: false,
       sync: { alter: true },
@@ -27,7 +30,8 @@ import { Machine } from './machine/models/machine.model';
     CompanyModule,
     DriverModule,
     BuilderModule,
-    MachineModule
+    MachineModule,
+    MachineDriverModule,
   ],
   controllers: [],
   providers: [],

@@ -17,11 +17,11 @@ export class DriverService {
   }
 
   findAll() {
-    return this.driverModel.findAll();
+    return this.driverModel.findAll({include: { all: true }});
   }
 
   findOne(id: number) {
-    return this.driverModel.findByPk(id);
+    return this.driverModel.findByPk(id, { include: { all: true } });
   }
 
   async update(id: number, updateDriverDto: UpdateDriverDto) {
