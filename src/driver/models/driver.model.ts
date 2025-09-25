@@ -1,4 +1,4 @@
-export class Driver {import {
+import {
   AutoIncrement,
   Column,
   DataType,
@@ -6,15 +6,15 @@ export class Driver {import {
   Table,
 } from "sequelize-typescript";
 
-interface ICompanyCreationAttr {
-  name: string;
-  email: string;
-  address: string;
+interface IDriverCreationAttr {
+  first_name: string;
+  last_name: string;
   phone: string;
+  license: string;
 }
 
-@Table({ tableName: "company", freezeTableName: true })
-export class Driver extends Model<Driver, ICompanyCreationAttr> {
+@Table({ tableName: "driver", freezeTableName: true })
+export class Driver extends Model<Driver, IDriverCreationAttr> {
   @Column({
     type: DataType.INTEGER,
     autoIncrement: true,
@@ -25,25 +25,25 @@ export class Driver extends Model<Driver, ICompanyCreationAttr> {
   @Column({
     type: DataType.STRING(50),
     allowNull: false,
+  })
+  declare first_name: string;
+
+  @Column({
+    type: DataType.STRING(50),
+    allowNull: false,
+  })
+  declare last_name: string;
+
+  @Column({
+    type: DataType.STRING(15),
     unique: true,
   })
-  declare name: string;
+  declare phone: string;
 
   @Column({
     type: DataType.STRING(50),
     allowNull: false,
     unique: true,
   })
-  declare email: string;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  declare address: string;
-  
-  @Column({
-    type: DataType.STRING(15),
-    unique: true,
-  })
-  declare phone: string;
-}}
+  declare license: string;
+}

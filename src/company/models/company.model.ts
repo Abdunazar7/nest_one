@@ -2,9 +2,11 @@ import {
   AutoIncrement,
   Column,
   DataType,
+  HasMany,
   Model,
   Table,
 } from "sequelize-typescript";
+import { Builder } from "../../builder/models/builder.model";
 
 interface ICompanyCreationAttr {
   name: string;
@@ -46,4 +48,7 @@ export class Company extends Model<Company, ICompanyCreationAttr> {
     unique: true,
   })
   declare phone: string;
+
+  @HasMany(() => Builder)
+  builders: Builder[];
 }

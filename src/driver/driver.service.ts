@@ -1,26 +1,42 @@
-import { Injectable } from '@nestjs/common';
-import { CreateDriverDto } from './dto/create-driver.dto';
-import { UpdateDriverDto } from './dto/update-driver.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateDriverDto } from "./dto/create-driver.dto";
+import { UpdateDriverDto } from "./dto/update-driver.dto";
+import { Driver } from "./models/driver.model";
+import { InjectModel } from "@nestjs/sequelize";
+
 
 @Injectable()
 export class DriverService {
-  create(createDriverDto: CreateDriverDto) {
-    return 'This action adds a new driver';
+  constructor(
+    @InjectModel(Driver) private readonly driverModel: typeof Driver
+  ) {}
+
+  async create(createDriverDto: CreateDriverDto) {
+    const newDriver = await this.driverModel.create(createDriverDto);
+    return newDriver;
   }
 
   findAll() {
-    return `This action returns all driver`;
+    return this.driverModel.findAll();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} driver`;
+    return this.driverModel.findByPk(id);
   }
 
-  update(id: number, updateDriverDto: UpdateDriverDto) {
-    return `This action updates a #${id} driver`;
+  async update(id: number, updateDriverDto: UpdateDriverDto) {
+    const driver = await this.driverModel.update(updateDriverDto, {
+      where: { id },
+      returning: true,
+    });
+    return driver[1][0];
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} driver`;
+  async remove(id: number) {
+    const delCount = await this.driverModel.destroy({ where: { id } });
+    if (delCount === 0) {
+      return { message: "No driver found to delete." };
+    }
+    return { message: "Driver deleted successfully.", id };
   }
 }

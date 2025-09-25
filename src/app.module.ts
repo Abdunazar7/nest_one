@@ -4,6 +4,9 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { CompanyModule } from './company/company.module';
 import { Company } from './company/models/company.model';
 import { DriverModule } from './driver/driver.module';
+import { BuilderModule } from './builder/builder.module';
+import { Driver } from './driver/models/driver.model';
+import { Builder } from './builder/models/builder.model';
 
 @Module({
   imports: [ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
@@ -14,13 +17,14 @@ import { DriverModule } from './driver/driver.module';
       username: process.env.PG_USER,
       password: process.env.PG_PASSWORD,
       database: process.env.PG_DATABASE,
-      models: [Company],
+      models: [Company, Driver, Builder],
       autoLoadModels: true,
-      logging: true,
+      logging: false,
       sync: { alter: true },
     }),
     CompanyModule,
-    DriverModule
+    DriverModule,
+    BuilderModule
   ],
   controllers: [],
   providers: [],
