@@ -6,9 +6,10 @@ import { User } from './models/user.model';
 import { UserRole } from './models/user-role.model';
 import { Role } from '../role/models/role.model';
 import { RoleModule } from '../role/role.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports:[SequelizeModule.forFeature([User, UserRole, Role]), RoleModule],
+  imports:[SequelizeModule.forFeature([User, UserRole, Role]), RoleModule, JwtModule],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService]

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -6,6 +6,8 @@ import { AddRemoveDto } from './dto/add-remove-role.dto';
 import { ActiveUserDto } from './dto/activate-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './models/user.model';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.auth';
+import { SelfGuard } from '../common/guards/self.guard';
 
 @ApiTags("Users - Foydalanuvchilar")
 @Controller("users")
@@ -51,11 +53,15 @@ export class UsersController {
     description: "foydalanuvhcilar royxati",
     type: [User],
   })
+
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
+  @UseGuards(SelfGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.usersService.findOne(+id);

@@ -40,8 +40,9 @@ export class UsersService {
     });
     return user?.dataValues;
   }
+
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.userModel.findByPk(id);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
