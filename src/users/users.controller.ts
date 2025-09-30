@@ -8,6 +8,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './models/user.model';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.auth';
 import { SelfGuard } from '../common/guards/self.guard';
+import { Roles } from '../common/decorators/role.decorator';
+import { RolesGuard } from '../common/guards/role.guard';
 
 @ApiTags("Users - Foydalanuvchilar")
 @Controller("users")
@@ -27,6 +29,9 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Roles("ADMIN", "USER")
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Post("add-role")
   @HttpCode(200)
   addRole(@Body() addRemoveRoleDto: AddRemoveDto) {
