@@ -3,15 +3,18 @@ import { CreateDriverDto } from './dto/create-driver.dto';
 import { UpdateDriverDto } from './dto/update-driver.dto';
 import { Driver } from './models/driver.model';
 import { InjectModel } from '@nestjs/sequelize';
+import { FileService } from '../file/file.service';
 
 @Injectable()
 export class DriverService {
   constructor(
-    @InjectModel(Driver) private readonly driverModel: typeof Driver
+    @InjectModel(Driver) private readonly driverModel: typeof Driver,
+    private readonly fileservice: FileService
   ) {}
 
-  create(createDriverDto: CreateDriverDto) {
-    return this.driverModel.create(createDriverDto);
+  async create(createDriverDto: CreateDriverDto, image: any): Promise<Driver> {
+    const fileName = await this.fileservice.savefile(image);
+    return this.driverModel.create({ ...createDriverDto, image: fileName });
   }
 
   findAll(): Promise<Driver[]> {
@@ -19,15 +22,15 @@ export class DriverService {
   }
 
   findOne(id: number): Promise<Driver | null> {
-    return this.driverModel.findByPk(id)
+    return this.driverModel.findByPk(id);
   }
 
   async update(id: number, updateDriverDto: UpdateDriverDto) {
-    const driver = await this.driverModel.update(updateDriverDto,{
-      where:{id},
-      returning:true
-    })
-    return driver[1][0]
+    const driver = await this.driverModel.update(updateDriverDto, {
+      where: { id },
+      returning: true,
+    });
+    return driver[1][0];
   }
 
   async remove(id: number) {

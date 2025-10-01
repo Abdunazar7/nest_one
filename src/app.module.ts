@@ -16,6 +16,7 @@ import { Role } from './role/models/role.model';
 import { UsersModule } from './users/users.module';
 import { UserRole } from './users/models/user-role.model';
 import { AuthModule } from './auth/auth.module';
+import { FileService } from './file/file.service';
 
 
 
@@ -44,6 +45,6 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [FileService],
 })
 export class AppModule {}
