@@ -17,12 +17,17 @@ import { UsersModule } from './users/users.module';
 import { UserRole } from './users/models/user-role.model';
 import { AuthModule } from './auth/auth.module';
 import { FileService } from './file/file.service';
-
-
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from "path";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: ".env", isGlobal: true }),
+
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "../static")
+    }),
+
     SequelizeModule.forRoot({
       dialect: "postgres",
       host: process.env.PG_HOST,
