@@ -2,7 +2,7 @@ import { Role } from "../../../role/models/role.model"
 import { User } from "../../models/user.model"
 
 
-export const userStub = (): Partial<User | Role> => {
+export const userStub = () => {
     return {
         id:1,
         name: "user1",
