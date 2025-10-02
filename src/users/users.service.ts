@@ -21,7 +21,7 @@ export class UsersService {
       throw new NotFoundException("Bunday role mavjud emas");
     }
     const user = await this.userModel.create(createUserDto);
-    await user.$set("roles", [role.id]);
+    // await user.$set("roles", [role.id]);
     return user;
   }
 
