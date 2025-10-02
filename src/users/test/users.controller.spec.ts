@@ -17,6 +17,7 @@ describe("Users controller test", () => {
       controllers: [UsersController],
       providers: [UsersService, JwtService],
     }).compile();
+
     usersService = moduleRef.get(UsersService);
     usersController = moduleRef.get(UsersController);
 
@@ -46,7 +47,6 @@ describe("Users controller test", () => {
         };
 
         user = await usersController.create(createUserDto);
-        console.log(user);
       });
 
       it("then it should call usersService", () => {
@@ -56,8 +56,64 @@ describe("Users controller test", () => {
       it("then it should return user", () => {
         expect(user).toEqual(userStub());
       });
-
-      
     });
   });
+
+  describe("findAll users test", () => {
+    describe("when findAll is called", () => {
+      let users: User[];
+
+      beforeAll(async () => {
+        users = await usersController.findAll();
+      });
+
+      it("then it should call usersService.findAll", () => {
+        expect(usersService.findAll).toHaveBeenCalled();
+      });
+
+      it("then it should return an array of users", () => {
+        expect(users).toEqual([userStub()]);
+      });
+    });
+  });
+
+  describe("findOne user test", () => {
+    describe("when findOne is called", () => {
+      let user: User | null;
+
+      beforeAll(async () => {
+        user = await usersController.findOne(userStub().id);
+      });
+
+      it("then it should call usersService.findOne with id", () => {
+        expect(usersService.findOne).toHaveBeenCalledWith(userStub().id);
+      });
+
+      it("then it should return a user", () => {
+        expect(user).toEqual(userStub());
+      });
+    });
+  });
+
+  describe("remove user test", () => {
+    describe("when remove is called", () => {
+      let result: string;
+
+      beforeAll(async () => {
+        result = await usersController.remove(userStub().id);
+      });
+
+      it("then it should call usersService.remove with id", () => {
+        expect(usersService.remove).toHaveBeenCalledWith(userStub().id);
+      });
+
+      it("then it should return success message", () => {
+        expect(result).toEqual({
+          message: `User with ID ${userStub().id} was deleted successfully`,
+        });
+      });
+    });
+  });
+
+  
 });

@@ -68,7 +68,7 @@ export class UsersController {
   @UseGuards(SelfGuard)
   @UseGuards(JwtAuthGuard)
   @Get(":id")
-  findOne(@Param("id") id: string) {
+  findOne(@Param("id") id: number) {
     return this.usersService.findOne(+id);
   }
 
@@ -83,7 +83,7 @@ export class UsersController {
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
+  remove(@Param("id") id: number) {
     return this.usersService.remove(+id);
   }
 }
