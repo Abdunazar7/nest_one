@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail } from "class-validator";
+import { IsEmail, IsStrongPassword } from "class-validator";
+
 
 export class CreateUserDto {
   @ApiProperty({
@@ -15,10 +16,17 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @ApiProperty({
-    example: "1234567",
-    description: "Foydalanuvchi paroli",
-  })
+  @IsStrongPassword(
+    {
+      minLength: 6, // minimum length
+      minUppercase: 1, // at least 1 uppercase
+      minNumbers: 1, // at least 1 number
+      minSymbols: 0, // symbols not required
+    },
+    {
+      message: "Parol yetarlicha mustahkam emas", // custom error message
+    }
+  )
   password: string;
 
   @ApiProperty({

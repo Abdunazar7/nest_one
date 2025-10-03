@@ -24,7 +24,7 @@ export class AuthService {
   async singup(createUserDto: CreateUserDto) {
     const candidate = await this.usersService.findByEmail(createUserDto.email);
     if (candidate) {
-      throw new ConflictException("Bunday foydalanuvchi majud");
+      throw new ConflictException("Bunday foydalanuvchi mavjud");
     }
     const hashedPassword = await bcrypt.hash(createUserDto.password, 7);
     createUserDto.password = hashedPassword;
